@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:input_international_multi/src/widget/international_phone_input.dart';
-import 'package:input_international_multi/src/widget/select_country_phone_code_widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -70,14 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Container(
-              child: SelectCountryPhoneCodeWidget(
 
-              ),
-            ),
             InternationalPhoneInput()
           ],
         ),

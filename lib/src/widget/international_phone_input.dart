@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:input_international_multi/src/model/country_list.dart';
+import 'package:input_international_multi/src/model/country_list_model.dart';
 
 class InternationalPhoneInput extends StatefulWidget {
   final void Function(String phoneNumber, String internationalizedPhoneNumber,
@@ -46,8 +47,8 @@ class InternationalPhoneInput extends StatefulWidget {
 }
 
 class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
-  Map<String, dynamic> selectedItem;
-  List<Map<String, dynamic>> itemList = CountriesList.countryList;
+  CountryModel selectedItem;
+
 
   String errorText;
   String hintText;
@@ -104,20 +105,20 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
             DropdownButtonHideUnderline(
               child: Padding(
                 padding: EdgeInsets.only(top: 8),
-                child: DropdownButton<Map<String, dynamic>>(
+                child: DropdownButton<CountryModel>(
                   value: selectedItem,
                   icon: Padding(
                     padding:
                     EdgeInsets.only(bottom: (decoration != null) ? 6 : 0),
                     child: dropdownIcon ?? Icon(Icons.arrow_drop_down),
                   ),
-                  onChanged: (Map<String, dynamic> newValue) {
+                  onChanged: (CountryModel newValue) {
                     setState(() {
                       selectedItem = newValue;
                     });
                   },
-                  items: itemList.map<DropdownMenuItem<Map<String, dynamic>>>((Map<String, dynamic> value) {
-                    return DropdownMenuItem<Map<String, dynamic>>(
+                  items: listCountryModel.map<DropdownMenuItem<CountryModel>>((CountryModel value) {
+                    return DropdownMenuItem<CountryModel>(
                       value: value,
                       child: Container(
                         padding: const EdgeInsets.only(bottom: 5.0),
@@ -126,7 +127,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
                           children: <Widget>[
                             if (showCountryFlags) ...[
                               Image.asset(
-                                'assets/flags/${value["alpha_2_code"].toString().toLowerCase()}.png',
+                                'assets/flags/${value.alpha2Code.toLowerCase()}.png',
                                 width: 32.0,
                                 height: 20,
                                 //package: 'input_international_multi',
@@ -134,7 +135,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
                             ],
                             if (showCountryCodes) ...[
                               SizedBox(width: 4),
-                              Text(value["dial_code"])
+                              Text(value.dialCode)
                             ]
                           ],
                         ),
