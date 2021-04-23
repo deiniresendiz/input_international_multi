@@ -127,7 +127,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
                           children: <Widget>[
                             if (showCountryFlags) ...[
                               Image.asset(
-                                'assets/flags/${value.alpha2Code.toLowerCase()}.png',
+                                value.getFlag(),
                                 width: 32.0,
                                 height: 20,
                                 //package: 'input_international_multi',

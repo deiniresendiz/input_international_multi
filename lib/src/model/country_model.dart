@@ -15,6 +15,7 @@ class CountryModel {
     this.nationality,
     this.dialCode,
     this.nameTranslations,
+    this.flag
   });
 
   String numCode;
@@ -24,6 +25,7 @@ class CountryModel {
   String nationality;
   String dialCode;
   String nameTranslations;
+  String flag;
 
   factory CountryModel.fromJson(Map<String, dynamic> json) => CountryModel(
     numCode: json["num_code"],
@@ -45,11 +47,15 @@ class CountryModel {
     "nameTranslations": nameTranslations,
   };
 
+  String getFlag(){
+    return 'assets/flags/${alpha2Code.toLowerCase()}.png';
+  }
+
   String getName(Locale locale){
     if(locale == null){
       return enShortName;
     }else{
-      return 'pendiente';
+      return json.decode(nameTranslations)[locale.languageCode]??enShortName;
     }
   }
 

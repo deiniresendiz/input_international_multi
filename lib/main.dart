@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:input_international_multi/src/widget/international_phone_input.dart';
+import 'package:input_international_multi/src/widget/multi_select_country_widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -70,7 +71,18 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
 
-            InternationalPhoneInput()
+            InternationalPhoneInput(),
+            InkWell(
+                child: Text('siiiiii'),
+                onTap: (){
+                  Navigator.of(context).push(PageRouteBuilder(
+                      opaque: false,
+                      pageBuilder: (BuildContext context, _, __) =>
+                          MultiSelectCountryWidget(
+
+                          )));
+                },
+            ),
           ],
         ),
       ),
