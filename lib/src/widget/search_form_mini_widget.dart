@@ -1,12 +1,10 @@
-import 'package:auto_size_text_field/auto_size_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:plerk_mobile/src/localizations/app_localizations.dart';
 
 class SearchFormMiniWidget extends StatefulWidget {
   final Function(String) onChange;
   final Function(bool) onSearch;
-  SearchFormMiniWidget({this.onChange, this.onSearch});
+  final String hintText;
+  SearchFormMiniWidget({this.onChange, this.onSearch, this.hintText = 'Search...'});
   @override
   _SearchFormMiniWidgetState createState() => _SearchFormMiniWidgetState();
 }
@@ -31,10 +29,10 @@ class _SearchFormMiniWidgetState extends State<SearchFormMiniWidget> {
         children: [
           Container(
               padding: EdgeInsets.symmetric(vertical: 6,horizontal: 4),
-              child: SvgPicture.asset('assets/icons/search.svg', fit: BoxFit.contain)
+              child: Image.asset('assets/search.png', fit: BoxFit.contain)
           ),
           Flexible(
-            child: AutoSizeTextField(
+            child: TextField(
               onChanged: (value){
                 if(this.widget.onChange != null){
                   if(_editingController.text.length <= 50){
@@ -49,7 +47,6 @@ class _SearchFormMiniWidgetState extends State<SearchFormMiniWidget> {
               },
               controller: _editingController,
               textInputAction: TextInputAction.done,
-              fullwidth: true,
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   color: Color(0xff182135),
@@ -67,7 +64,7 @@ class _SearchFormMiniWidgetState extends State<SearchFormMiniWidget> {
                 enabledBorder: InputBorder.none,
                 errorBorder: InputBorder.none,
                 disabledBorder: InputBorder.none,
-                hintText: AppLocalizations.of(context).translate('btn_search'),
+                hintText: widget.hintText,
                 hintStyle: TextStyle(
                     fontFamily: 'Montserrat',
                     color: Color(0xff7B88A8),
