@@ -56,10 +56,11 @@ class _MultiSelectCountryWidgetState extends State<MultiSelectCountryWidget> {
             borderRadius: BorderRadius.circular(8)
         ),
         width: MediaQuery.of(context).size.width*0.8,
+        height: MediaQuery.of(context).size.height*0.9,
         child: Column(
           children: [
             Container(
-                margin: EdgeInsets.symmetric(vertical: 4,horizontal: 4),
+                margin: EdgeInsets.symmetric(vertical: 16,horizontal: 16),
                 child: SearchFormMiniWidget(
                   onChange: (value){
                     _searchData(value: value);

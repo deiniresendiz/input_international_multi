@@ -15,7 +15,7 @@ class _SearchFormMiniWidgetState extends State<SearchFormMiniWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 32,
+      height: 40,
       decoration: BoxDecoration(
           border: Border.all(
               color: Color(0xffBCC4DA),
@@ -28,7 +28,7 @@ class _SearchFormMiniWidgetState extends State<SearchFormMiniWidget> {
       child: Row(
         children: [
           Container(
-              padding: EdgeInsets.symmetric(vertical: 6,horizontal: 4),
+              padding: EdgeInsets.symmetric(vertical: 10,horizontal: 8),
               child: Image.asset('assets/search.png', fit: BoxFit.contain)
           ),
           Flexible(
