@@ -3,43 +3,33 @@ import 'package:input_international_multi/src/model/country_list_model.dart';
 import 'package:input_international_multi/src/model/country_model.dart';
 import 'package:input_international_multi/src/widget/search_form_mini_widget.dart';
 
-class MultiSelectCountryWidget extends StatefulWidget {
+class SelectCountryWidget extends StatefulWidget {
   final Locale locale;
   final TextStyle textStyle;
-  final List<CountryModelInput> listCountry;
-  final Function(List<CountryModelInput>) onChange;
+  final Function(CountryModelInput) onChange;
   final String buttonOk;
   final String buttonCancel;
   final TextStyle textStyleTextButton;
   final ButtonStyle textStyleButton;
   final String textSearch;
-  MultiSelectCountryWidget(
+  SelectCountryWidget(
       {this.locale,
-      this.textStyle,
-      this.listCountry,
-      this.onChange,
-      this.buttonCancel = 'Cancel',
-      this.buttonOk = 'Ok',
-      this.textStyleButton,
-      this.textStyleTextButton,
-      this.textSearch
+        this.textStyle,
+        this.onChange,
+        this.buttonCancel = 'Cancel',
+        this.buttonOk = 'Ok',
+        this.textStyleButton,
+        this.textStyleTextButton,
+        this.textSearch
       });
+
   @override
-  _MultiSelectCountryWidgetState createState() =>
-      _MultiSelectCountryWidgetState();
+  _SelectCountryWidgetState createState() => _SelectCountryWidgetState();
 }
 
-class _MultiSelectCountryWidgetState extends State<MultiSelectCountryWidget> {
-  List<CountryModelInput> _listItems = [];
+class _SelectCountryWidgetState extends State<SelectCountryWidget> {
   List<CountryModelInput> _listData = listCountryModel;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    if (widget.listCountry != null && widget.listCountry.isNotEmpty)
-      _listItems.addAll(widget.listCountry);
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +76,7 @@ class _MultiSelectCountryWidgetState extends State<MultiSelectCountryWidget> {
                 )),
             Expanded(
               child: ListView.builder(
-                  //physics: NeverScrollableScrollPhysics(),
+                //physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: _listData.length,
                   itemBuilder: _itemList),
@@ -107,20 +97,6 @@ class _MultiSelectCountryWidgetState extends State<MultiSelectCountryWidget> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            _checkItem(
-                active: (_listItems.isNotEmpty)
-                    ? (_listItems
-                            .where((element) =>
-                                (element.iso3Code == item.iso3Code)
-                                    ? true
-                                    : false)
-                            .isNotEmpty)
-                        ? true
-                        : false
-                    : false),
-            SizedBox(
-              width: 8,
-            ),
             Image.asset(
               item.getFlag(),
               width: 24,
@@ -142,47 +118,13 @@ class _MultiSelectCountryWidgetState extends State<MultiSelectCountryWidget> {
         ),
       ),
       onTap: () {
-        bool ban = (_listItems.isNotEmpty)
-            ? (_listItems
-                    .where((element) =>
-                        (element.iso3Code == item.iso3Code) ? true : false)
-                    .isNotEmpty)
-                ? true
-                : false
-            : false;
-        if (!ban) {
-          setState(() {
-            _listItems.add(item);
-          });
-        } else {
-          setState(() {
-            _listItems.removeWhere((element) =>
-                (element.iso3Code == item.iso3Code) ? true : false);
-          });
-        }
+        if(widget.onChange != null)
+          widget.onChange(item);
+          Navigator.of(context).pop();
       },
     );
   }
 
-  Widget _checkItem({bool active = false}) {
-    return Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          border:
-              Border.all(color: active ? Color(0xff6A35FF) : Color(0xffD0BFFF)),
-          color: active ? Color(0xff6A35FF) : Colors.white),
-      alignment: Alignment.center,
-      child: Image.asset(
-        'assets/check.png',
-        width: 40,
-        height: 40,
-        fit: BoxFit.contain,
-        //package: 'input_international',
-      ),
-    );
-  }
 
   void _searchData({String value}) {
     setState(() {
@@ -190,12 +132,12 @@ class _MultiSelectCountryWidgetState extends State<MultiSelectCountryWidget> {
         if (value.length != 0) {
           _listData = listCountryModel
               .where((country) => (country.enShortName
-                      .toLowerCase()
-                      .contains(value.toLowerCase()) ||
-                  country
-                      .getName(widget.locale)
-                      .toLowerCase()
-                      .contains(value.toLowerCase())))
+              .toLowerCase()
+              .contains(value.toLowerCase()) ||
+              country
+                  .getName(widget.locale)
+                  .toLowerCase()
+                  .contains(value.toLowerCase())))
               .toList();
         } else {
           _listData = listCountryModel;
@@ -207,32 +149,18 @@ class _MultiSelectCountryWidgetState extends State<MultiSelectCountryWidget> {
 
   Widget _btnActions(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(right: 16),
+      alignment: Alignment.centerRight,
       height: 40,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          TextButton(
-            style: widget.textStyleButton,
-            child: Text(
-              widget.buttonCancel??'Cancel',
-              style: widget.textStyleTextButton,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-          TextButton(
-            style: widget.textStyleButton,
-            child: Text(
-              widget.buttonOk??'Ok',
-              style: widget.textStyleTextButton,
-            ),
-            onPressed: () {
-              if (widget.onChange != null) widget.onChange(_listItems);
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
+      child: TextButton(
+        style: widget.textStyleButton,
+        child: Text(
+          widget.buttonCancel??'Cancel',
+          style: widget.textStyleTextButton,
+        ),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
       ),
     );
   }

@@ -1,38 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:input_international_multi/src/model/country_list_model.dart';
+import 'package:input_international_multi/src/model/country_model.dart';
+
 
 class InputSelectLadaPhoneWidget extends StatefulWidget {
   final String lada;
   final Function(String) onChange;
-  final Function(CountryModel) onChangeCountry;
+  final Function(CountryModelInput) onChangeCountry;
   final TextStyle textStyle;
   final TextStyle textStyleLabel;
   final TextStyle textStyleText;
   final bool enable;
   final String label;
-  InputSelectLadaPhoneWidget({this.lada,this.onChange, this.textStyle, this.enable = true, this.label, this.textStyleText, this.textStyleLabel, this.onChangeCountry});
+  InputSelectLadaPhoneWidget(
+      {this.lada,
+      this.onChange,
+      this.textStyle,
+      this.enable = true,
+      this.label,
+      this.textStyleText,
+      this.textStyleLabel,
+      this.onChangeCountry});
   @override
-  _InputSelectLadaPhoneWidgetState createState() => _InputSelectLadaPhoneWidgetState();
+  _InputSelectLadaPhoneWidgetState createState() =>
+      _InputSelectLadaPhoneWidgetState();
 }
 
-class _InputSelectLadaPhoneWidgetState extends State<InputSelectLadaPhoneWidget> {
-  String _lada = '52';
-  CountryModel _countryModel = new CountryModel();
+class _InputSelectLadaPhoneWidgetState
+    extends State<InputSelectLadaPhoneWidget> {
+  String _lada = '+52';
+  CountryModelInput _countryModel = new CountryModelInput();
   TextEditingController _controller = new TextEditingController();
   final OutlineInputBorder _noneInputBorderEnabled = OutlineInputBorder(
-    borderSide: BorderSide(
-        color: Color(0xff7B88A8)
-    ),
+    borderSide: BorderSide(color: Color(0xff7B88A8)),
   );
 
   @override
   void initState() {
-    _countryModel = listCountryModel.firstWhere((country) => (country.dialCode == '+$_lada'));
-    if(widget.lada != null)
-      _countryModel = listCountryModel.firstWhere((country) => (country.dialCode == '+${widget.lada}'));
-    _controller.text = _countryModel.dialCode.substring(1);
-    if(widget.onChange != null)
-      widget.onChange(_lada);
+    _countryModel = listCountryModel
+        .firstWhere((country) => (country.phoneCode == _lada));
+    if (widget.lada != null)
+      _countryModel = listCountryModel
+          .firstWhere((country) => (country.phoneCode == widget.lada));
+    _controller.text = _countryModel.phoneCode.substring(1);
+    if (widget.onChange != null) widget.onChange(_lada);
     // TODO: implement initState
     super.initState();
   }
@@ -40,22 +51,21 @@ class _InputSelectLadaPhoneWidgetState extends State<InputSelectLadaPhoneWidget>
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 85,
+      width: 90,
       height: 40,
       child: TextField(
-        onTap: (){
+        onTap: () {
           Navigator.of(context).push(PageRouteBuilder(
               opaque: false,
               pageBuilder: (BuildContext context, _, __) =>
                   SelectLadaPhoneWidget(
                     textStyleText: widget.textStyleText,
-                    onChange: (country){
+                    onChange: (country) {
                       _countryModel = country;
-                      _lada = _countryModel.dialCode.substring(1);
-                      _controller.text  = _lada;
-                      if(widget.onChange != null)
-                        widget.onChange(_lada);
-                      if(widget.onChangeCountry != null)
+                      _lada = _countryModel.phoneCode;
+                      _controller.text = _lada;
+                      if (widget.onChange != null) widget.onChange(_lada);
+                      if (widget.onChangeCountry != null)
                         widget.onChangeCountry(_countryModel);
                     },
                   )));
@@ -70,9 +80,7 @@ class _InputSelectLadaPhoneWidgetState extends State<InputSelectLadaPhoneWidget>
           filled: true,
           isDense: true,
           disabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: Color(0xffBCC4DA)
-            ),
+            borderSide: BorderSide(color: Color(0xffBCC4DA)),
           ),
           enabledBorder: _noneInputBorderEnabled,
           errorBorder: _noneInputBorderEnabled,
@@ -84,7 +92,7 @@ class _InputSelectLadaPhoneWidgetState extends State<InputSelectLadaPhoneWidget>
             width: 20,
             height: 20,
             fit: BoxFit.contain,
-            //package: 'input_international_multi',
+            //package: 'input_international',
           ),
           labelText: widget.label,
         ),
@@ -95,9 +103,9 @@ class _InputSelectLadaPhoneWidgetState extends State<InputSelectLadaPhoneWidget>
 
 class SelectLadaPhoneWidget extends StatelessWidget {
   final TextStyle textStyleText;
-  final Function(CountryModel) onChange;
+  final Function(CountryModelInput) onChange;
   SelectLadaPhoneWidget({this.textStyleText, this.onChange});
-  final List<CountryModel> _listData = listCountryModel;
+  final List<CountryModelInput> _listData = listCountryModel;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +118,7 @@ class SelectLadaPhoneWidget extends StatelessWidget {
           hoverColor: Colors.transparent,
           highlightColor: Colors.transparent,
           child: _list(context),
-          onTap: (){
+          onTap: () {
             Navigator.of(context).pop();
           },
         ),
@@ -118,33 +126,30 @@ class SelectLadaPhoneWidget extends StatelessWidget {
     );
   }
 
-  Widget _list(BuildContext context){
+  Widget _list(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 16),
       alignment: Alignment.centerLeft,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 4),
         decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8)
-        ),
+            color: Colors.white, borderRadius: BorderRadius.circular(8)),
         width: 110,
-        height: MediaQuery.of(context).size.height*0.9,
+        height: MediaQuery.of(context).size.height * 0.9,
         child: ListView.builder(
-          //physics: NeverScrollableScrollPhysics(),
+            //physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: _listData.length,
-            itemBuilder: _itemList
-        ),
+            itemBuilder: _itemList),
       ),
     );
   }
 
-  Widget _itemList(BuildContext context, int index){
-    CountryModel item = _listData[index];
+  Widget _itemList(BuildContext context, int index) {
+    CountryModelInput item = _listData[index];
     return InkWell(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16,vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         height: 32,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -154,22 +159,22 @@ class SelectLadaPhoneWidget extends StatelessWidget {
               width: 24,
               height: 20,
               fit: BoxFit.contain,
-              //package: 'input_international_multi',
+              //package: 'input_international',
             ),
-            SizedBox(width: 8,),
+            SizedBox(
+              width: 8,
+            ),
             Text(
-              item.dialCode,
+              item.phoneCode,
               style: textStyleText,
             )
           ],
         ),
       ),
-      onTap: (){
-        if(this.onChange != null)
-          this.onChange(item);
+      onTap: () {
+        if (this.onChange != null) this.onChange(item);
         Navigator.pop(context);
       },
     );
   }
 }
-

@@ -4,7 +4,8 @@ class SearchFormMiniWidget extends StatefulWidget {
   final Function(String) onChange;
   final Function(bool) onSearch;
   final String hintText;
-  SearchFormMiniWidget({this.onChange, this.onSearch, this.hintText = 'Search...'});
+  SearchFormMiniWidget(
+      {this.onChange, this.onSearch, this.hintText = 'Search...'});
   @override
   _SearchFormMiniWidgetState createState() => _SearchFormMiniWidgetState();
 }
@@ -52,8 +53,7 @@ class _SearchFormMiniWidgetState extends State<SearchFormMiniWidget> {
                   color: Color(0xff182135),
                   fontWeight: FontWeight.w500,
                   fontStyle: FontStyle.normal,
-                  fontSize: 14
-              ),
+                  fontSize: 14),
               decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,
@@ -64,29 +64,35 @@ class _SearchFormMiniWidgetState extends State<SearchFormMiniWidget> {
                 enabledBorder: InputBorder.none,
                 errorBorder: InputBorder.none,
                 disabledBorder: InputBorder.none,
-                hintText: widget.hintText,
+                hintText: widget.hintText??'Search...',
                 hintStyle: TextStyle(
                     fontFamily: 'Montserrat',
                     color: Color(0xff7B88A8),
                     fontWeight: FontWeight.w500,
                     fontStyle: FontStyle.normal,
-                    fontSize: 14
-                ),
+                    fontSize: 14),
               ),
             ),
           ),
-          (_editingController.text.length != 0)?
-          InkWell(
-            child: Icon(Icons.close, color: Color(0xff7B88A8),size: 20,),
-            onTap: (){
-              setState(() {
-                FocusScope.of(context).unfocus();
-                _editingController.clear();
-                if(widget.onSearch != null)
-                  widget.onSearch(false);
-              });
-            },
-          ):Container(width: 1,height: 1,)
+          (_editingController.text.length != 0)
+              ? InkWell(
+                  child: Icon(
+                    Icons.close,
+                    color: Color(0xff7B88A8),
+                    size: 20,
+                  ),
+                  onTap: () {
+                    setState(() {
+                      FocusScope.of(context).unfocus();
+                      _editingController.clear();
+                      if (widget.onSearch != null) widget.onSearch(false);
+                    });
+                  },
+                )
+              : Container(
+                  width: 1,
+                  height: 1,
+                )
         ],
       ),
     );

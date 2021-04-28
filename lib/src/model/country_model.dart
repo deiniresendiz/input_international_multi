@@ -2,53 +2,53 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 
-CountryModel countryModelFromJson(String str) => CountryModel.fromJson(json.decode(str));
+CountryModelInput countryModelFromJson(String str) => CountryModelInput.fromJson(json.decode(str));
 
-String countryModelToJson(CountryModel data) => json.encode(data.toJson());
+String countryModelInputToJson(CountryModelInput data) => json.encode(data.toJson());
 
-class CountryModel {
-  CountryModel({
+class CountryModelInput {
+  CountryModelInput({
     this.numCode,
-    this.alpha2Code,
-    this.alpha3Code,
+    this.isoCode,
+    this.iso3Code,
     this.enShortName,
     this.nationality,
-    this.dialCode,
+    this.phoneCode,
     this.nameTranslations,
     this.flag
   });
 
   String numCode;
-  String alpha2Code;
-  String alpha3Code;
+  String isoCode;
+  String iso3Code;
   String enShortName;
   String nationality;
-  String dialCode;
+  String phoneCode;
   String nameTranslations;
   String flag;
 
-  factory CountryModel.fromJson(Map<String, dynamic> json) => CountryModel(
+  factory CountryModelInput.fromJson(Map<String, dynamic> json) => CountryModelInput(
     numCode: json["num_code"],
-    alpha2Code: json["alpha_2_code"],
-    alpha3Code: json["alpha_3_code"],
+    isoCode: json["iso_code"],
+    iso3Code: json["iso_3_code"],
     enShortName: json["en_short_name"],
     nationality: json["nationality"],
-    dialCode: json["dial_code"],
+    phoneCode: json["phone_code"],
     nameTranslations: json["nameTranslations"],
   );
 
   Map<String, dynamic> toJson() => {
     "num_code": numCode,
-    "alpha_2_code": alpha2Code,
-    "alpha_3_code": alpha3Code,
+    "iso_code": isoCode,
+    "iso_3_code": iso3Code,
     "en_short_name": enShortName,
     "nationality": nationality,
-    "dial_code": dialCode,
+    "phone_code": phoneCode,
     "nameTranslations": nameTranslations,
   };
 
   String getFlag(){
-    return 'assets/flags/${alpha2Code.toLowerCase()}.png';
+    return 'assets/flags/${isoCode.toLowerCase()}.png';
   }
 
   String getName(Locale locale){

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:input_international_multi/src/widget/multi_select_country_widget.dart';
 import 'package:input_international_multi/src/widget/input_select_lada_phone_widget.dart';
+import 'package:input_international_multi/src/widget/select_country_widget.dart';
 
 void main() {
   runApp(MyApp());
@@ -81,6 +82,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
                           )));
                 },
+            ),
+            SizedBox(height: 86,),
+            InkWell(
+              child: Text('nooo'),
+              onTap: (){
+                Navigator.of(context).push(PageRouteBuilder(
+                    opaque: false,
+                    pageBuilder: (BuildContext context, _, __) =>
+                        SelectCountryWidget(
+
+                        )));
+              },
             ),
           ],
         ),
